@@ -7,7 +7,7 @@ module Rack::Manifest::Sprockets
       environment: Rails.application.assets,
       filename: 'manifest.yml.erb',
       content_type: 'text/yaml',
-      data: File.read(FILE_PATH),
+      data: File.read(path),
       metadata: {},
       cache: Sprockets::Cache.new
     }
