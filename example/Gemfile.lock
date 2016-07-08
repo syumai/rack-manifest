@@ -2,7 +2,7 @@ PATH
   remote: ..
   specs:
     rack-manifest (0.1.0)
-      rack (~> 2.0.1)
+      rack
 
 GEM
   remote: https://rubygems.org/
