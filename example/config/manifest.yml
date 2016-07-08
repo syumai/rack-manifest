@@ -1,8 +1,8 @@
-name: "Rack Manifest"
-short_name: "Manifest"
+name: Rack Manifest
+short_name: Manifest
 icons: 
-   src: "images/icon.png"
-   sizes: "512x512"
-   type: "image/png"
-start_url: "/"
-display: "standalone"
+   src: <%= 'images/icon.png' %>
+   sizes: 512x512
+   type: image/png
+start_url: /
+display: standalone

@@ -1,4 +1,4 @@
-require 'rack/manifest'
+require_relative '../lib/rack/manifest'
 
 use Rack::Manifest
 

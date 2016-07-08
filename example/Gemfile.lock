@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    rack-manifest (0.1.0)
+    rack-manifest (0.1.2)
       rack
 
 GEM

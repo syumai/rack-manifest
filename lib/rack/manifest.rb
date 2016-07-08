@@ -1,26 +1,36 @@
-require 'yaml'
 require 'json'
+require 'erb'
+require 'action_view/helpers/asset_url_helper'
 require 'rack/manifest/version'
 require 'rack/manifest/rails' if defined?(Rails::Railtie)
+require 'rack/manifest/sprockets' if defined?(Sprockets) && defined?(Rails)
 
-module Rack
-  class Manifest
-    def initialize(app)
-      @app = app
+class Rack::Manifest
+  FILE_PATH = './config/manifest.yml'
+
+  if defined?(Sprockets) && defined?(Rails)
+    include Rack::Manifest::Sprockets
+  else
+    def load_yaml path
+      YAML.load(ERB.new(File.read(path)).result)
     end
+  end
 
-    def call(env)
-      if env[PATH_INFO] == '/manifest.json'
-        manifest = YAML.load_file('./config/manifest.yml')
-        json = JSON.generate(manifest)
-        [
-          200,
-          {'Content-Type' => 'application/json'},
-          [json]
-        ]
-      else
-        @app.call(env)
-      end
+  def initialize(app)
+    @app = app
+  end
+
+  def call(env)
+    if env['PATH_INFO'] == '/manifest.json'
+      manifest = load_yaml(FILE_PATH)
+      json = JSON.generate(manifest)
+      [
+        200,
+        {'Content-Type' => 'application/json'},
+        [json]
+      ]
+    else
+      @app.call(env)
     end
   end
 end

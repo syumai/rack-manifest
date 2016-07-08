@@ -14,17 +14,18 @@ gem 'rack-manifest'
 ## Usage
 
 ### Rails
-Set your manifest.yml file like this one into your `config` directory.
+* Set your manifest.yml file like this one into your `config` directory.
+* ERB format and asset path helpers are available.
 
 ```yaml
-name: "Rack Manifest"
-short_name: "Manifest"
+name: Rack Manifest
+short_name: Manifest
 icons: 
-   src: "images/icon.png"
-   sizes: "512x512"
-   type: "image/png"
-start_url: "/"
-display: "standalone"
+   src: <%= image_path('icon.png') %>
+   sizes: 512x512
+   type: image/png
+start_url: /
+display: standalone
 ```
 
 ## License
