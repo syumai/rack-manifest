@@ -14,7 +14,8 @@ gem 'rack-manifest'
 ## Usage
 
 ### Rails
-* Set your manifest.yml file like this one into your `config` directory.
+* Set `manifest.yml` file like this one into your `config` directory.
+* After restarting server, you can see the converted manifest file on `/manifest.json` path.
 * ERB format and asset path helpers are available.
 
 ```yaml
