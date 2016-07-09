@@ -1,6 +1,6 @@
 require 'json'
 require 'erb'
-require 'action_view/helpers/asset_url_helper'
+require "digest/md5"
 require 'rack/manifest/version'
 require 'rack/manifest/rails' if defined?(Rails::Railtie)
 require 'rack/manifest/sprockets' if defined?(Sprockets) && defined?(Rails)
@@ -22,15 +22,15 @@ class Rack::Manifest
 
   def call(env)
     if env['PATH_INFO'] == '/manifest.json'
-      modified_time = get_modified_time(FILE_PATH)
-      return [304, {}, []] if env['HTTP_IF_MODIFIED_SINCE'] == modified_time
       manifest = load_yaml(FILE_PATH)
       json = JSON.generate(manifest)
+      etag = digest(json)
+      return [304, {}, []] if env['HTTP_IF_NONE_MATCH'] == etag
       [
         200,
         {
           'Content-Type' => 'application/json',
-          'Last-Modified' => modified_time,
+          'Etag' => etag,
           'Content-Length' => json.length.to_s
         },
         [json]
@@ -41,9 +41,8 @@ class Rack::Manifest
   end
 
   private
-  def get_modified_time(path)
-    time = File.mtime(path)
-    time.strftime('%a, %d %b %Y %H:%M:%S GMT')
+  def digest(str)
+    Digest::MD5.hexdigest(str)
   end
 end
 
