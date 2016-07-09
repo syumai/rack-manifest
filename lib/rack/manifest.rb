@@ -1,7 +1,6 @@
 require 'json'
 require 'erb'
 require 'action_view/helpers/asset_url_helper'
-require 'rack/request'
 require 'rack/manifest/version'
 require 'rack/manifest/rails' if defined?(Rails::Railtie)
 require 'rack/manifest/sprockets' if defined?(Sprockets) && defined?(Rails)
@@ -23,20 +22,17 @@ class Rack::Manifest
 
   def call(env)
     if env['PATH_INFO'] == '/manifest.json'
-      headers = {}
-      if env.has_key?('HTTP_IF_MODIFIED_SINCE')
-        fetched_date = env['HTTP_IF_MODIFIED_SINCE']
-        return [304, headers, []] if get_modified_time(FILE_PATH) == fetched_date
-      end
+      modified_time = get_modified_time(FILE_PATH)
+      return [304, {}, []] if env['HTTP_IF_MODIFIED_SINCE'] == modified_time
       manifest = load_yaml(FILE_PATH)
       json = JSON.generate(manifest)
       [
         200,
-        headers.merge({
+        {
           'Content-Type' => 'application/json',
-          'Last-Modified' => get_modified_time(FILE_PATH),
+          'Last-Modified' => modified_time,
           'Content-Length' => json.length.to_s
-        }),
+        },
         [json]
       ]
     else
