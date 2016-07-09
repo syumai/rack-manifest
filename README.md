@@ -21,9 +21,9 @@ gem 'rack-manifest'
 name: Rack Manifest
 short_name: Manifest
 icons: 
-   src: <%= image_path('icon.png') %>
-   sizes: 512x512
-   type: image/png
+  - src: <%= image_path('icon.png') %>
+    sizes: 512x512
+    type: image/png
 start_url: /
 display: standalone
 ```
