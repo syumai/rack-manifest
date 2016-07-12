@@ -1,6 +1,7 @@
 require 'json'
 require 'erb'
 require "digest/md5"
+require 'yaml'
 require 'rack/manifest/version'
 require 'rack/manifest/rails' if defined?(Rails::Railtie)
 require 'rack/manifest/sprockets' if defined?(Sprockets) && defined?(Rails)
